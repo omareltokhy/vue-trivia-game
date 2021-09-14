@@ -59,7 +59,11 @@
 </template>
 
 <script>
-import { fetchCategories, fetchMaxQuestions, fetchQuestionsWithSettings } from "../../api/questionsAPI";
+import {
+  fetchCategories,
+  fetchMaxQuestions,
+  fetchQuestionsWithSettings,
+} from "../../api/questionsAPI";
 
 export default {
   name: "Settings",
@@ -79,35 +83,29 @@ export default {
       selectedCategoryId: 0,
       selectedDifficulty: "easy",
       category_question_count: {},
-      questionsForSelection: {} 
+      questionsForSelection: {},
     };
   },
   methods: {
     async startTrivia() {
-        
-    //Fetch max questions per difficulty level
-    const [error, categoriesCount] = await fetchMaxQuestions(this.selectedCategoryId)
-    this.category_question_count = categoriesCount.category_question_count
-    this.error = error
-    
-    //Set max questions depending on which difficulty level is selected
-    let maxQuestionsForDifficulty = 0
-    if(this.selectedDifficulty === "easy") maxQuestionsForDifficulty = this.category_question_count.total_easy_question_count
-    else if(this.selectedDifficulty === "medium") maxQuestionsForDifficulty = this.category_question_count.total_medium_question_count
-    else maxQuestionsForDifficulty = this.category_question_count.total_hard_question_count
+      //Fetch max questions per difficulty level
+      const [error, categoriesCount] = await fetchMaxQuestions(this.selectedCategoryId);
+      this.category_question_count = categoriesCount.category_question_count;
+      this.error = error;
 
-    //Set selected question amount to max if too many are selected
-    if(this.selectedQuestionAmount > maxQuestionsForDifficulty) this.selectedQuestionAmount = maxQuestionsForDifficulty
+      //Set max questions depending on which difficulty level is selected
+      let maxQuestionsForDifficulty = 0;
+      if (this.selectedDifficulty === "easy") maxQuestionsForDifficulty = this.category_question_count.total_easy_question_count;
+      else if (this.selectedDifficulty === "medium") maxQuestionsForDifficulty = this.category_question_count.total_medium_question_count;
+      else maxQuestionsForDifficulty = this.category_question_count.total_hard_question_count;
 
-    console.log("Question amount, category ID, difficulty: ", 
-        this.selectedQuestionAmount,
-        this.selectedCategoryId,
-        this.selectedDifficulty
-      );
+      //Set selected question amount to max if too many are selected
+      if (this.selectedQuestionAmount > maxQuestionsForDifficulty) this.selectedQuestionAmount = maxQuestionsForDifficulty;
 
-      const [questionWithSettingsError, results ] = await fetchQuestionsWithSettings(this.selectedQuestionAmount, this.selectedCategoryId, this.selectedDifficulty);
-      // console.log(results)
+      //Fetch questions based on settings
+      const [questionWithSettingsError, results] = await fetchQuestionsWithSettings( this.selectedQuestionAmount, this.selectedCategoryId, this.selectedDifficulty);
       this.questionsForSelection = results.results;
+
       console.log(this.questionsForSelection);
     },
   },
@@ -123,8 +121,5 @@ export default {
 }
 .container-radio {
   cursor: pointer;
-}
-
-.container-radio input {
 }
 </style>

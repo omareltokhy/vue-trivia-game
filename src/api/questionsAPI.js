@@ -15,7 +15,6 @@ export const fetchCategories = async () => {
         return [error.message, null]
     }
 }
-
 export const fetchMaxQuestions = async (categoryId) => {
     try {
         const results = await fetch("https://opentdb.com/api_count.php?category=" + categoryId).then(r => r.json())
@@ -24,16 +23,8 @@ export const fetchMaxQuestions = async (categoryId) => {
         return [error.message, null]
     }
 }
-
 export const fetchQuestionsWithSettings = async (questionsAmount, CategoryId, difficulty) => {
-    let URL =
-        "https://opentdb.com/api.php?" +
-        "amount=" +
-        questionsAmount +
-        "&category=" +
-        CategoryId +
-        "&difficulty=" +
-        difficulty;
+    let URL = "https://opentdb.com/api.php?" + "amount=" + questionsAmount + "&category=" + CategoryId + "&difficulty=" + difficulty;
 
     try {
         const results = await fetch(URL).then(r => r.json())
