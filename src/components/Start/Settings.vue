@@ -59,7 +59,7 @@
 </template>
 
 <script>
-import { fetchCategories } from "../../api/questionsAPI";
+import { fetchCategories, fetchMaxQuestions, fetchQuestionsWithSettings } from "../../api/questionsAPI";
 
 export default {
   name: "Settings",
@@ -69,8 +69,6 @@ export default {
     this.error = error;
     this.categories = categories.trivia_categories;
     this.isLoading = false;
-
-    console.log(this.categories);
   },
   data() {
     return {
@@ -80,31 +78,26 @@ export default {
       selectedQuestionAmount: 10,
       selectedCategoryId: 0,
       selectedDifficulty: "easy",
+      category_question_count: {},
+      questionsForSelection: {} 
     };
   },
   methods: {
     async startTrivia() {
         
     //Fetch max questions per difficulty level
-    const {category_question_count} = await fetch("https://opentdb.com/api_count.php?category=" + this.selectedCategoryId).then(r => r.json())
-    let maxQuestionsForDifficulty = 0
-
+    const [error, categoriesCount] = await fetchMaxQuestions(this.selectedCategoryId)
+    this.category_question_count = categoriesCount.category_question_count
+    this.error = error
+    
     //Set max questions depending on which difficulty level is selected
-    if(this.selectedDifficulty === "easy") maxQuestionsForDifficulty = category_question_count.total_easy_question_count
-    else if(this.selectedDifficulty === "medium") maxQuestionsForDifficulty = category_question_count.total_medium_question_count
-    else maxQuestionsForDifficulty = category_question_count.total_hard_question_count
+    let maxQuestionsForDifficulty = 0
+    if(this.selectedDifficulty === "easy") maxQuestionsForDifficulty = this.category_question_count.total_easy_question_count
+    else if(this.selectedDifficulty === "medium") maxQuestionsForDifficulty = this.category_question_count.total_medium_question_count
+    else maxQuestionsForDifficulty = this.category_question_count.total_hard_question_count
 
     //Set selected question amount to max if too many are selected
     if(this.selectedQuestionAmount > maxQuestionsForDifficulty) this.selectedQuestionAmount = maxQuestionsForDifficulty
-
-    let questionsURL =
-        "https://opentdb.com/api.php?" +
-        "amount=" +
-        this.selectedQuestionAmount +
-        "&category=" +
-        this.selectedCategoryId +
-        "&difficulty=" +
-        this.selectedDifficulty;
 
     console.log("Question amount, category ID, difficulty: ", 
         this.selectedQuestionAmount,
@@ -112,10 +105,10 @@ export default {
         this.selectedDifficulty
       );
 
-      console.log("Fetching questions from: " + questionsURL);
-      const { results } = await fetch(questionsURL).then((r) => r.json());
-      const questions = results;
-      console.log(questions);
+      const [questionWithSettingsError, results ] = await fetchQuestionsWithSettings(this.selectedQuestionAmount, this.selectedCategoryId, this.selectedDifficulty);
+      // console.log(results)
+      this.questionsForSelection = results.results;
+      console.log(this.questionsForSelection);
     },
   },
 };
