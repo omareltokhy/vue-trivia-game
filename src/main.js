@@ -15,6 +15,7 @@ Vue.config.productionTip = false
 
 const routes = [
   { path: '/', component: Start },
+  { path: '/start', component: Start },
   { path: '/questions', component: Questions },
   { path: '/result', component: Result },
 ]
