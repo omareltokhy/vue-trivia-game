@@ -64,6 +64,7 @@ import {
   fetchMaxQuestions,
   fetchQuestionsWithSettings,
 } from "../../api/questionsAPI";
+// import Store from "../../store/store"
 
 export default {
   name: "Settings",
@@ -107,6 +108,7 @@ export default {
       this.questionsForSelection = results.results;
 
       console.log(this.questionsForSelection);
+      // Store.state.questions = this.questionsForSelection
     },
   },
 };
