@@ -64,7 +64,8 @@ import {
   fetchMaxQuestions,
   fetchQuestionsWithSettings,
 } from "../../api/questionsAPI";
-// import Store from "../../store/store"
+// import store from "../../store/store"
+import {mapActions} from "vuex";
 
 export default {
   name: "Settings",
@@ -88,6 +89,7 @@ export default {
     };
   },
   methods: {
+    ...mapActions(['setQuestions']),
     async startTrivia() {
       //Fetch max questions per difficulty level
       const [error, categoriesCount] = await fetchMaxQuestions(this.selectedCategoryId);
@@ -108,7 +110,7 @@ export default {
       this.questionsForSelection = results.results;
 
       console.log(this.questionsForSelection);
-      // Store.state.questions = this.questionsForSelection
+      await this.setQuestions(this.questionsForSelection)   
     },
   },
 };

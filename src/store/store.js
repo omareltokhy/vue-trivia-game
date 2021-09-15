@@ -2,6 +2,8 @@ import Vue from 'vue';
 import Vuex from 'vuex'
 // import {fetchQuestionsWithSettings} from "../../api/questionsAPI"
 
+Vue.use(Vuex)
+
 export default new Vuex.Store({
     state: {
         loadingQuestions: true,
@@ -25,7 +27,7 @@ export default new Vuex.Store({
         setQuestionsError: (state, payload) => {
             state.questionsError = payload
         },
-        setQuestions: (state, payload) => {
+        SET_QUESTIONS: (state, payload) => {
             state.questions = payload
         },
         setUsername: (state, payload) => {
@@ -33,8 +35,14 @@ export default new Vuex.Store({
         }
     },
     actions: {
-        async fetchQuestions({commit}) {
+        async setQuestions ({commit, state}) {
+            return new Promise((resolve) => {
+                commit('SET_QUESTIONS', state)
+                resolve()
+            })
+        },
+        // async fetchQuestions({commit}) {
             // const questions = await 
-        }
+        // }
     },
 })
