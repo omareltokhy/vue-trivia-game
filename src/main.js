@@ -1,8 +1,10 @@
 import Vue from 'vue'
 import App from './App.vue'
 import VueRouter from 'vue-router'
+// import Vuex from './store/store.js'
 
 Vue.use(VueRouter)
+// Vue.use(Vuex)
 
 //Views 
 import Start from "./components/Start/Start.vue";
@@ -15,6 +17,7 @@ Vue.config.productionTip = false
 
 const routes = [
   { path: '/', component: Start },
+  { path: '/start', component: Start },
   { path: '/questions', component: Questions },
   { path: '/result', component: Result },
 ]

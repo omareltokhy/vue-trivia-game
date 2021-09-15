@@ -12,6 +12,7 @@
 <script>
 import Header from "./components/Header/Header.vue";
 
+
 // import Start from "./components/Start/Start.vue";
 // import Questions from "./components/Questions/Questions.vue";
 // import Result from "./components/Result/Result.vue";
