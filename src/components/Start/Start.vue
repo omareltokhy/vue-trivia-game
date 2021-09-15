@@ -1,6 +1,5 @@
 <template>
   <div>
-    <strong>Enter username:</strong>
     <Username />
   </div>
 </template>
