@@ -1,20 +1,18 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import { QuestionsAPI } from "@/api/questionsAPI";
-import Vue from 'vue';
-import Vuex from 'vuex'
-import { UserAPI } from '../api/usersAPI'
+import { UserAPI } from "../api/usersAPI";
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
 	strict: true,
 	state: {
-    user: [],
-    userId: '',
-    username: '',
-    highScore: 0,
-    userError: '',
+		user: [],
+		userId: "",
+		username: "",
+		highScore: 0,
+		userError: "",
 		loadingQuestions: true,
 		questions: [],
 		allCategories: [],
@@ -25,21 +23,21 @@ export default new Vuex.Store({
 		questionsError: null,
 	},
 	mutations: {
-    setUser: (state, payload) => {
-        state.user = payload
-    },
-    setUserId: (state, payload) => {
-        state.userId = payload
-    },
-    setUsername: (state, payload) => {
-        state.username = payload
-    },
-    setHighScore: (state, payload) => {
-        state.highScore = payload
-    },
-    setUserError: (state, payload) => {
-        state.userError = payload
-    },
+		setUser: (state, payload) => {
+			state.user = payload;
+		},
+		setUserId: (state, payload) => {
+			state.userId = payload;
+		},
+		setUsername: (state, payload) => {
+			state.username = payload;
+		},
+		setHighScore: (state, payload) => {
+			state.highScore = payload;
+		},
+		setUserError: (state, payload) => {
+			state.userError = payload;
+		},
 		setLoadingQuestions: (state, payload) => {
 			state.loadingQuestions = payload;
 		},
@@ -50,63 +48,62 @@ export default new Vuex.Store({
 			state.questions = payload;
 		},
 		setCategories: (state, payload) => {
-			state.allCategories = payload
+			state.allCategories = payload;
 		},
-    setSelectedCategoryId: (state, payload) => {
-        state.selectedCategoryId = payload
-    },
+		setSelectedCategoryId: (state, payload) => {
+			state.selectedCategoryId = payload;
+		},
 		setCategoryQuestionsCount: (state, payload) => {
-			state.category_question_count = payload
+			state.category_question_count = payload;
 		},
 		setSelectedQuestionsAmount: (state, payload) => {
-			state.selectedQuestionsAmount = payload
+			state.selectedQuestionsAmount = payload;
 		},
 		setSelectedDifficulty: (state, payload) => {
-			state.selectedDifficulty = payload
+			state.selectedDifficulty = payload;
 		},
 	},
 	actions: {
-    // Getting user information from API by username
-        async getUser({ commit, state }) {
-            try {
-                const [error, user] = await UserAPI.getUserByUsername(state.username)
-                // Updating values
-                commit('setUser', user)
-                commit('setUserId', state.user[0].id)
-                commit('setUsername', state.user[0].username)
-                commit('setHighScore', state.user[0].highScore)
-                commit('setUserError', error)
-            } catch (error) {
-                commit('setUserError', error.message)
-            }
-        },
-        // Adding a new user to API
-        async addUser({ commit, state }) {
-            try {
-                const [error, user] = await UserAPI.addUser(state.username)
-                // Updating values
-                commit('setUser', user)
-                commit('setUserId', state.user.id)
-                commit('setUsername', state.user.username)
-                commit('setHighScore', state.user.highScore)
-                commit('setUserError', error)
-            } catch (error) {
-                commit('setUserError', error.message)
-            }
-        },
-        // Updating a new high score for user by id
-        async updateHighScore({ commit, state }) {
-            try {
-                const [error, user] = await UserAPI.editHighScore(state.userId)
-                // Updating values
-                commit('setUser', user)
-                commit('setHighScore', state.user.highScore)
-                commit('setUserError', error)
-            } catch (error) {
-                commit('setUserError', error.message)
-            }
-        },
-    },
+		// Getting user information from API by username
+		async getUser({ commit, state }) {
+			try {
+				const [error, user] = await UserAPI.getUserByUsername(state.username);
+				// Updating values
+				commit("setUser", user);
+				commit("setUserId", state.user[0].id);
+				commit("setUsername", state.user[0].username);
+				commit("setHighScore", state.user[0].highScore);
+				commit("setUserError", error);
+			} catch (error) {
+				commit("setUserError", error.message);
+			}
+		},
+		// Adding a new user to API
+		async addUser({ commit, state }) {
+			try {
+				const [error, user] = await UserAPI.addUser(state.username);
+				// Updating values
+				commit("setUser", user);
+				commit("setUserId", state.user.id);
+				commit("setUsername", state.user.username);
+				commit("setHighScore", state.user.highScore);
+				commit("setUserError", error);
+			} catch (error) {
+				commit("setUserError", error.message);
+			}
+		},
+		// Updating a new high score for user by id
+		async updateHighScore({ commit, state }) {
+			try {
+				const [error, user] = await UserAPI.editHighScore(state.userId);
+				// Updating values
+				commit("setUser", user);
+				commit("setHighScore", state.user.highScore);
+				commit("setUserError", error);
+			} catch (error) {
+				commit("setUserError", error.message);
+			}
+		},
 		async getQuestions({ commit, state }) {
 			try {
 				//Fetch max questions per difficulty level
@@ -126,7 +123,7 @@ export default new Vuex.Store({
 
 				try {
 					const [error, results] = await QuestionsAPI.getQuestions(state.selectedQuestionsAmount, state.selectedCategoryId, state.selectedDifficulty);
-					
+
 					if (results) commit("setQuestions", results.results);
 					else commit("setQuestionsError", error);
 				} catch (error) {
@@ -136,17 +133,17 @@ export default new Vuex.Store({
 				commit("setQuestionsError", error.message);
 			}
 		},
-		async getCategories({ commit, state }){
+		async getCategories({ commit, state }) {
 			try {
 				const [error, categories] = await QuestionsAPI.getCategories();
-				state.questionsError = error
+				state.questionsError = error;
 
 				// console.log("Categories fetced: " + categories.trivia_categories)
-				if(categories) commit("setCategories", categories.trivia_categories);
+				if (categories) commit("setCategories", categories.trivia_categories);
 				else commit("setQuestionsError", error);
 			} catch (error) {
 				commit("setQuestionsError", error.message);
 			}
-		}
+		},
 	},
 });
