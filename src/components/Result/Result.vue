@@ -3,6 +3,10 @@
     <meta charset="UTF-8">
     <h2>Results</h2>
 
+    <!--  v-if="this.isLoading" -->
+    <div class="loading" v-if="this.isLoading"> <img src="@/assets/loading.gif" alt=""> </div>
+
+
     <p id="new_highscore" v-if="score > highScore">New highscore!</p>
     <p>Your score: <span class="score">{{score}}</span></p>
     <p>Previous high score: <span class="score">{{highScore}}</span></p>
@@ -55,11 +59,14 @@ export default {
       this.$router.push('/start')
     },
     async onReplay() {
+      this.isLoading = true;
       //1. Fetch new questions
       try {
         await this.getQuestions();
+        this.isLoading = false;
       } catch (error) {
         this.setQuestionsError(error.message)
+        this.isLoading = false;
       }
       //2. Settings already in store?
       //3. Route to questions page
@@ -70,6 +77,17 @@ export default {
 </script>
 
 <style scoped>
+  .loading {
+    z-index: 10;
+    background-color: rgba(0,0, 0, 0.35);
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
+    padding-top: 20%;
+    position: absolute;
+    text-align: center;
+  }
   li {
     list-style: none;
   }
