@@ -22,6 +22,7 @@ export default new Vuex.Store({
 		selectedDifficulty: "easy",
 		category_question_count: {},
 		questionsError: null,
+		questionItems: []
 	},
 	mutations: {
 		setUser: (state, payload) => {
@@ -62,6 +63,9 @@ export default new Vuex.Store({
 		},
 		setSelectedDifficulty: (state, payload) => {
 			state.selectedDifficulty = payload;
+		},
+		setQuestionItems: (state, payload) => {
+			state.questionItems = payload;
 		},
 	},
 	getters: {
@@ -149,6 +153,17 @@ export default new Vuex.Store({
 				else commit("setQuestionsError", error);
 			} catch (error) {
 				commit("setQuestionsError", error.message);
+			}
+		},
+		async getQuestionItems({ commit, state }) {
+			try {
+				const[error, questions] = await QuestionsAPI.getQuestions();
+				state.questionsError = error;
+
+				if(questions) commit("setQuestionItems", questions.results);
+				else commit("setQuestionsError", error.message)
+			} catch (error) {
+				commit("setQuestionsError", error.message)
 			}
 		},
 	},
