@@ -1,46 +1,34 @@
 <template>
   <div>
-    <p v-if="isLoading">Fetching users...</p>
     <h4>Enter username</h4>
-    <input id="username" type="text" v-model="username" />
-    <button @click="getUser">Get user info</button>
-    <button @click="addUser">Add user</button>
-    <p>Your high score is {{highscore}}, hope you get better score this thime</p>
+    <input @input="onUsernameChange" id="username" type="text" />
+    <button @click="getUserBtn">Get user info</button>
+    <button @click="addUserBtn">Add user</button>
+    <button @click="highScoreBtn">High Score</button>
   </div>
 </template>
 
 <script>
-import { fetchUserByUsername, addUser } from "@/api/usersAPI";
+import { mapActions, mapMutations } from 'vuex'
 
 export default {
   name: "Username",
-  components: {
-  },
   methods: {
-    async getUser() {
-      let username = this.username
-      const [error, user] = await fetchUserByUsername(username)
-      this.error = error;
-      this.user = user;
-      this.isLoading = false
-      this.highscore = user[0].highScore;
+    ...mapActions(['getUser', 'addUser', 'updateHighScore']),
+    ...mapMutations(['setUsername']),
+    async getUserBtn() {
+      this.getUser()
     },
-    async addUser() {
-      let username = this.username
-      const [error, message] = await addUser(username)
-      this.error = error
-      console.log(message)
+    async addUserBtn() {
+      this.addUser()
+    },
+    onUsernameChange(event) {
+      this.setUsername(event.target.value.trim())
+    },
+    async highScoreBtn() {
+      this.updateHighScore()
     }
-  },
-  data() {
-    return {
-      isLoading: true,
-      error: '',
-      user: null,
-      username: '',
-      highscore: 0
-    };
-  },
+  }
 };
 </script>
 
