@@ -1,15 +1,19 @@
 import Vue from 'vue';
 import Vuex from 'vuex'
-// import {fetchQuestionsWithSettings} from "../../api/questionsAPI"
+import { UserAPI } from '../api/usersAPI'
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
     state: {
+        user: [],
+        userId: '',
+        username: '',
+        highScore: 0,
+        userError: '',
         loadingQuestions: true,
         questions: {},
         questionsError: '',
-        username: '',
         selectedQuestionAmount: 10,
         selectedCategoryId: 0,
         selectedDifficulty: "easy",
@@ -18,31 +22,80 @@ export default new Vuex.Store({
     getters: {
         questionStrings: state => {
             return state.questions
-        }
+        },
     },
     mutations: {
+        setUser: (state, payload) => {
+            state.user = payload
+        },
+        setUserId: (state, payload) => {
+            state.userId = payload
+        },
+        setUsername: (state, payload) => {
+            state.username = payload
+        },
+        setHighScore: (state, payload) => {
+            state.highScore = payload
+        },
+        setUserError: (state, payload) => {
+            state.userError = payload
+        },
         setLoadingQuestions: (state, payload) => {
             state.loadingQuestions = payload
         },
         setQuestionsError: (state, payload) => {
             state.questionsError = payload
         },
-        SET_QUESTIONS: (state, payload) => {
+        setQuestions: (state, payload) => {
             state.questions = payload
         },
-        setUsername: (state, payload) => {
-            state.username = payload
-        }
     },
     actions: {
+        // Getting user information from API by username
+        async getUser({ commit, state }) {
+            try {
+                const [error, user] = await UserAPI.getUserByUsername(state.username)
+                // Updating values
+                commit('setUser', user)
+                commit('setUserId', state.user[0].id)
+                commit('setUsername', state.user[0].username)
+                commit('setHighScore', state.user[0].highScore)
+                commit('setUserError', error)
+            } catch (error) {
+                commit('setUserError', error.message)
+            }
+        },
+        // Adding a new user to API
+        async addUser({ commit, state }) {
+            try {
+                const [error, user] = await UserAPI.addUser(state.username)
+                // Updating values
+                commit('setUser', user)
+                commit('setUserId', state.user.id)
+                commit('setUsername', state.user.username)
+                commit('setHighScore', state.user.highScore)
+                commit('setUserError', error)
+            } catch (error) {
+                commit('setUserError', error.message)
+            }
+        },
+        // Updating a new high score for user by id
+        async updateHighScore({ commit, state }) {
+            try {
+                const [error, user] = await UserAPI.editHighScore(state.userId)
+                // Updating values
+                commit('setUser', user)
+                commit('setHighScore', state.user.highScore)
+                commit('setUserError', error)
+            } catch (error) {
+                commit('setUserError', error.message)
+            }
+        },
         async setQuestions ({commit, state}) {
             return new Promise((resolve) => {
-                commit('SET_QUESTIONS', state)
+                commit('setQuestions', state)
                 resolve()
             })
         },
-        // async fetchQuestions({commit}) {
-            // const questions = await 
-        // }
     },
 })
