@@ -12,6 +12,7 @@ export default new Vuex.Store({
 		userId: "",
 		username: "",
 		highScore: 0,
+		score: 0,
 		userError: "",
 		loadingQuestions: true,
 		questions: [],
@@ -62,6 +63,11 @@ export default new Vuex.Store({
 		setSelectedDifficulty: (state, payload) => {
 			state.selectedDifficulty = payload;
 		},
+	},
+	getters: {
+		userFound: state => {
+			return state.userId
+		}
 	},
 	actions: {
 		// Getting user information from API by username
@@ -138,7 +144,7 @@ export default new Vuex.Store({
 				const [error, categories] = await QuestionsAPI.getCategories();
 				state.questionsError = error;
 
-				// console.log("Categories fetced: " + categories.trivia_categories)
+				// console.log("Categories fetched: " + categories.trivia_categories)
 				if (categories) commit("setCategories", categories.trivia_categories);
 				else commit("setQuestionsError", error);
 			} catch (error) {

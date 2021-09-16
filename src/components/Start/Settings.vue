@@ -54,7 +54,6 @@
         </option>
       </select>
     </label>
-    <button v-on:click="startTrivia">Start Trivia</button>
   </div>
 </template>
 
@@ -83,7 +82,7 @@ export default {
       "selectedQuestionsAmount",
       "selectedDifficulty",
     ]),
-    ...mapGetters(["getSelectedCategoryId"]),
+    //...mapGetters(["getSelectedCategoryId"]), Onko tarpeellinen?
   },
   data() {
     return {
@@ -97,14 +96,14 @@ export default {
       "setSelectedQuestionsAmount",
       "setSelectedDifficulty",
     ]),
-    async startTrivia() {
+/*     async startTrivia() {
       try {
         await this.getQuestions();
       } catch (error) {
         // this.SET_QUESTIONS_ERROR(error.message);
         this.setQuestionsError(error.message);
       }
-    },
+    }, */
     onCategoryChange(event) {
       // this.SET_SELECTED_CATEGORY_ID(event.target.value);
       this.setSelectedCategoryId(event.target.value);
