@@ -64,7 +64,6 @@ export default {
       const [error, allCategories] = await this.getCategories();
       this.setCategories(allCategories.trivia_categories)
       this.setQuestionsError(error)
-      this.isLoading = false;
 
       this.getQuestions();
     } catch (error) {
@@ -79,11 +78,6 @@ export default {
       "selectedQuestionsAmount",
       "selectedDifficulty"
     ]),
-  },
-  data() {
-    return {
-      isLoading: true,
-    };
   },
   methods: {
     ...mapActions(["getQuestions", "getCategories"]),
