@@ -1,15 +1,17 @@
 <template>
   <div>
     <meta charset="UTF-8">
-    <h1>Results</h1>
+    <h2>Results</h2>
 
-    <p>Your score: <strong>{{score}}</strong></p>
-    <p>Previous high score: <strong>{{highScore}}</strong></p>
+    <p id="new_highscore" v-if="score > highScore">New highscore!</p>
+    <p>Your score: <span class="score">{{score}}</span></p>
+    <p>Previous high score: <span class="score">{{highScore}}</span></p>
 
     <button @click="onStart">Back to start</button>
     <button @click="onReplay">Replay</button>
 
     <div>
+      <h3>Questions</h3>
       <ul>
       <li
         v-for="question in questions"
@@ -22,9 +24,6 @@
       </li>
     </ul>
     </div>
-    
-    
-
   </div>
 </template>
 <script>
@@ -73,5 +72,13 @@ export default {
 <style scoped>
   li {
     list-style: none;
+  }
+  #new_highscore {
+    color: green;
+    font-size: 20px;
+    font-weight: bold;
+  }
+  .score {
+    font-weight: bold;
   }
 </style>
