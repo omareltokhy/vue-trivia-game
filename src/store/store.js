@@ -1,57 +1,72 @@
+import Vue from "vue";
+import Vuex from "vuex";
+import { QuestionsAPI } from "@/api/questionsAPI";
 import Vue from 'vue';
 import Vuex from 'vuex'
 import { UserAPI } from '../api/usersAPI'
 
-Vue.use(Vuex)
+Vue.use(Vuex);
 
 export default new Vuex.Store({
-    state: {
-        user: [],
-        userId: '',
-        username: '',
-        highScore: 0,
-        userError: '',
-        loadingQuestions: true,
-        questions: {},
-        questionsError: '',
-        selectedQuestionAmount: 10,
-        selectedCategoryId: 0,
-        selectedDifficulty: "easy",
-        category_question_count: {},
-    },  
-    getters: {
-        questionStrings: state => {
-            return state.questions
-        },
+	strict: true,
+	state: {
+    user: [],
+    userId: '',
+    username: '',
+    highScore: 0,
+    userError: '',
+		loadingQuestions: true,
+		questions: [],
+		allCategories: [],
+		selectedQuestionsAmount: 10,
+		selectedCategoryId: 0,
+		selectedDifficulty: "easy",
+		category_question_count: {},
+		questionsError: null,
+	},
+	mutations: {
+    setUser: (state, payload) => {
+        state.user = payload
     },
-    mutations: {
-        setUser: (state, payload) => {
-            state.user = payload
-        },
-        setUserId: (state, payload) => {
-            state.userId = payload
-        },
-        setUsername: (state, payload) => {
-            state.username = payload
-        },
-        setHighScore: (state, payload) => {
-            state.highScore = payload
-        },
-        setUserError: (state, payload) => {
-            state.userError = payload
-        },
-        setLoadingQuestions: (state, payload) => {
-            state.loadingQuestions = payload
-        },
-        setQuestionsError: (state, payload) => {
-            state.questionsError = payload
-        },
-        setQuestions: (state, payload) => {
-            state.questions = payload
-        },
+    setUserId: (state, payload) => {
+        state.userId = payload
     },
-    actions: {
-        // Getting user information from API by username
+    setUsername: (state, payload) => {
+        state.username = payload
+    },
+    setHighScore: (state, payload) => {
+        state.highScore = payload
+    },
+    setUserError: (state, payload) => {
+        state.userError = payload
+    },
+		setLoadingQuestions: (state, payload) => {
+			state.loadingQuestions = payload;
+		},
+		setQuestionsError: (state, payload) => {
+			state.questionsError = payload;
+		},
+		setQuestions: (state, payload) => {
+			state.questions = payload;
+		},
+		setCategories: (state, payload) => {
+			state.allCategories = payload
+		},
+    setSelectedCategoryId: (state, payload) => {
+        state.selectedCategoryId = payload
+    },
+		setCategoryQuestionsCount: (state, payload) => {
+			state.category_question_count = payload
+		},
+		setSelectedQuestionsAmount: (state, payload) => {
+			state.selectedQuestionsAmount = payload
+		},
+		setSelectedDifficulty: (state, payload) => {
+			state.selectedDifficulty = payload
+		},
+	},
+	actions: {
+    // Getting user information from API by username
         async getUser({ commit, state }) {
             try {
                 const [error, user] = await UserAPI.getUserByUsername(state.username)
@@ -91,11 +106,47 @@ export default new Vuex.Store({
                 commit('setUserError', error.message)
             }
         },
-        async setQuestions ({commit, state}) {
-            return new Promise((resolve) => {
-                commit('setQuestions', state)
-                resolve()
-            })
-        },
     },
-})
+		async getQuestions({ commit, state }) {
+			try {
+				//Fetch max questions per difficulty level
+				const [error, categoriesCount] = await QuestionsAPI.getMaxQuestions(state.selectedCategoryId);
+
+				commit("setCategoryQuestionsCount", categoriesCount.category_question_count);
+				commit("setQuestionsError", error);
+
+				//Set max questions depending on which difficulty level is selected
+				let maxQuestionsForDifficulty = 0;
+				if (state.selectedDifficulty === "easy") maxQuestionsForDifficulty = state.category_question_count.total_easy_question_count;
+				else if (state.selectedDifficulty === "medium") maxQuestionsForDifficulty = state.category_question_count.total_medium_question_count;
+				else maxQuestionsForDifficulty = state.category_question_count.total_hard_question_count;
+
+				//Set selected question amount to max if too many are selected
+				if (state.selectedQuestionsAmount > maxQuestionsForDifficulty) commit("setSelectedQuestionsAmount", maxQuestionsForDifficulty);
+
+				try {
+					const [error, results] = await QuestionsAPI.getQuestions(state.selectedQuestionsAmount, state.selectedCategoryId, state.selectedDifficulty);
+					
+					if (results) commit("setQuestions", results.results);
+					else commit("setQuestionsError", error);
+				} catch (error) {
+					commit("setQuestionsError", error.message);
+				}
+			} catch (error) {
+				commit("setQuestionsError", error.message);
+			}
+		},
+		async getCategories({ commit, state }){
+			try {
+				const [error, categories] = await QuestionsAPI.getCategories();
+				state.questionsError = error
+
+				// console.log("Categories fetced: " + categories.trivia_categories)
+				if(categories) commit("setCategories", categories.trivia_categories);
+				else commit("setQuestionsError", error);
+			} catch (error) {
+				commit("setQuestionsError", error.message);
+			}
+		}
+	},
+});
