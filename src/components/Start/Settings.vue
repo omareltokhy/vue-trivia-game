@@ -62,13 +62,13 @@ export default {
   async created() {
     try {
       const [error, allCategories] = await this.getCategories();
-      this.error = error;
-      this.allCategories = allCategories.trivia_categories;
+      this.setCategories(allCategories.trivia_categories)
+      this.setQuestionsError(error)
       this.isLoading = false;
 
       this.getQuestions();
     } catch (error) {
-      this.error = error.message;
+      this.setQuestionsError(error.message)
     }
   },
   computed: {
@@ -77,7 +77,7 @@ export default {
       "allCategories",
       "selectedCategoryId",
       "selectedQuestionsAmount",
-      "selectedDifficulty",
+      "selectedDifficulty"
     ]),
   },
   data() {
@@ -91,6 +91,8 @@ export default {
       "setSelectedCategoryId",
       "setSelectedQuestionsAmount",
       "setSelectedDifficulty",
+      "setCategories",
+      "setQuestionsError"
     ]),
     onCategoryChange(event) {
       this.setSelectedCategoryId(event.target.value);
