@@ -19,7 +19,5 @@ export default {
 </script>
 
 <style scoped>
-  #hello_world {
-    color: red;
-  }
+
 </style>

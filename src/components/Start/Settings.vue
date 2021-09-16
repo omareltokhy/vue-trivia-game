@@ -7,7 +7,7 @@
       checked="checked"
       value="easy"
       name="radio"
-      v-model="selectedDifficulty"
+      @change="onDifficultyChange"
     />
     <!-- <span class="checkmark"></span> -->
     <label for="medium" class="container-radio">Medium</label>
@@ -16,7 +16,7 @@
       type="radio"
       name="radio"
       value="medium"
-      v-model="selectedDifficulty"
+      @change="onDifficultyChange"
     />
     <!-- <span class="checkmark"></span> -->
     <label for="hard" class="container-radio">Hard</label>
@@ -25,7 +25,7 @@
       type="radio"
       name="radio"
       value="hard"
-      v-model="selectedDifficulty"
+      @change="onDifficultyChange"
     />
     <!-- <span class="checkmark"></span> -->
 
@@ -39,14 +39,14 @@
       class="form-control"
       min="1"
       max="50"
-      v-model="selectedQuestionAmount"
+      @change="onQuestionsAmountChange"
     />
 
     <label class="container-category"
       >Category:
-      <select v-model="selectedCategoryId">
+      <select @change="onCategoryChange">
         <option
-          v-for="category in categories"
+          v-for="category in allCategories"
           :value="category.id"
           :key="category.name"
         >
@@ -59,58 +59,63 @@
 </template>
 
 <script>
-import {
-  fetchCategories,
-  fetchMaxQuestions,
-  fetchQuestionsWithSettings,
-} from "../../api/questionsAPI";
-// import store from "../../store/store"
-import {mapActions} from "vuex";
+import { mapState, mapActions, mapGetters, mapMutations } from "vuex";
 
 export default {
   name: "Settings",
   async created() {
-    const [error, categories] = await fetchCategories();
+    try {
+      const [error, allCategories] = await this.getCategories();
+      this.error = error;
+      this.allCategories = allCategories.trivia_categories;
+      this.isLoading = false;
 
-    this.error = error;
-    this.categories = categories.trivia_categories;
-    this.isLoading = false;
+      this.getQuestions();
+    } catch (error) {
+      this.error = error.message;
+    }
+  },
+  computed: {
+    ...mapState([
+      "questions",
+      "allCategories",
+      "selectedCategoryId",
+      "selectedQuestionsAmount",
+      "selectedDifficulty",
+    ]),
+    ...mapGetters(["getSelectedCategoryId"]),
   },
   data() {
     return {
       isLoading: true,
-      error: "",
-      categories: [],
-      selectedQuestionAmount: 10,
-      selectedCategoryId: 0,
-      selectedDifficulty: "easy",
-      category_question_count: {},
-      questionsForSelection: {},
     };
   },
   methods: {
-    ...mapActions(['setQuestions']),
+    ...mapActions(["getQuestions", "getCategories"]),
+    ...mapMutations([
+      "setSelectedCategoryId",
+      "setSelectedQuestionsAmount",
+      "setSelectedDifficulty",
+    ]),
     async startTrivia() {
-      //Fetch max questions per difficulty level
-      const [error, categoriesCount] = await fetchMaxQuestions(this.selectedCategoryId);
-      this.category_question_count = categoriesCount.category_question_count;
-      this.error = error;
-
-      //Set max questions depending on which difficulty level is selected
-      let maxQuestionsForDifficulty = 0;
-      if (this.selectedDifficulty === "easy") maxQuestionsForDifficulty = this.category_question_count.total_easy_question_count;
-      else if (this.selectedDifficulty === "medium") maxQuestionsForDifficulty = this.category_question_count.total_medium_question_count;
-      else maxQuestionsForDifficulty = this.category_question_count.total_hard_question_count;
-
-      //Set selected question amount to max if too many are selected
-      if (this.selectedQuestionAmount > maxQuestionsForDifficulty) this.selectedQuestionAmount = maxQuestionsForDifficulty;
-
-      //Fetch questions based on settings
-      const [questionWithSettingsError, results] = await fetchQuestionsWithSettings( this.selectedQuestionAmount, this.selectedCategoryId, this.selectedDifficulty);
-      this.questionsForSelection = results.results;
-
-      console.log(this.questionsForSelection);
-      await this.setQuestions(this.questionsForSelection)   
+      try {
+        await this.getQuestions();
+      } catch (error) {
+        // this.SET_QUESTIONS_ERROR(error.message);
+        this.setQuestionsError(error.message);
+      }
+    },
+    onCategoryChange(event) {
+      // this.SET_SELECTED_CATEGORY_ID(event.target.value);
+      this.setSelectedCategoryId(event.target.value);
+    },
+    onQuestionsAmountChange(event) {
+      // this.SET_SELECTED_QUESTIONS_AMOUNT(event.target.value);
+      this.setSelectedQuestionsAmount(event.target.value);
+    },
+    onDifficultyChange(event) {
+      // this.SET_SELECTED_DIFFICULTY(event.target.value);
+      this.setSelectedDifficulty(event.target.value);
     },
   },
 };
