@@ -1,5 +1,21 @@
 import Vue from 'vue'
 import App from './App.vue'
+import router from "@/router/router";
+import store from '@/store/store'
+
+Vue.config.productionTip = false
+
+new Vue({
+  render: h => h(App),
+  router,
+  store,
+}).$mount('#app')
+
+
+/* 
+Vanha main, router siirtynyt router kansioon, voi varmaan poistaa
+import Vue from 'vue'
+import App from './App.vue'
 import VueRouter from 'vue-router'
 import Store from './store/store'
 
@@ -24,3 +40,4 @@ new Vue({
   router: new VueRouter({ routes }),
   store: Store,
 }).$mount('#app')
+ */
