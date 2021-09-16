@@ -9,7 +9,6 @@
       name="radio"
       @change="onDifficultyChange"
     />
-    <!-- <span class="checkmark"></span> -->
     <label for="medium" class="container-radio">Medium</label>
     <input
       id="medium"
@@ -18,7 +17,6 @@
       value="medium"
       @change="onDifficultyChange"
     />
-    <!-- <span class="checkmark"></span> -->
     <label for="hard" class="container-radio">Hard</label>
     <input
       id="hard"
@@ -27,7 +25,6 @@
       value="hard"
       @change="onDifficultyChange"
     />
-    <!-- <span class="checkmark"></span> -->
 
     <label for="trivia_amount" class="container-amount">
       Number of Questions:</label
@@ -58,7 +55,7 @@
 </template>
 
 <script>
-import { mapState, mapActions, mapGetters, mapMutations } from "vuex";
+import { mapState, mapActions, mapMutations } from "vuex";
 
 export default {
   name: "Settings",
@@ -82,7 +79,6 @@ export default {
       "selectedQuestionsAmount",
       "selectedDifficulty",
     ]),
-    //...mapGetters(["getSelectedCategoryId"]), Onko tarpeellinen?
   },
   data() {
     return {
@@ -96,24 +92,13 @@ export default {
       "setSelectedQuestionsAmount",
       "setSelectedDifficulty",
     ]),
-/*     async startTrivia() {
-      try {
-        await this.getQuestions();
-      } catch (error) {
-        // this.SET_QUESTIONS_ERROR(error.message);
-        this.setQuestionsError(error.message);
-      }
-    }, */
     onCategoryChange(event) {
-      // this.SET_SELECTED_CATEGORY_ID(event.target.value);
       this.setSelectedCategoryId(event.target.value);
     },
     onQuestionsAmountChange(event) {
-      // this.SET_SELECTED_QUESTIONS_AMOUNT(event.target.value);
       this.setSelectedQuestionsAmount(event.target.value);
     },
     onDifficultyChange(event) {
-      // this.SET_SELECTED_DIFFICULTY(event.target.value);
       this.setSelectedDifficulty(event.target.value);
     },
   },
