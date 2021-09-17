@@ -14,8 +14,8 @@ export default new Vuex.Store({
 		highScore: 0,
 		score: 0,
 		userError: "",
-		loadingQuestions: true,
 		questions: [],
+		currentQuestionIndex: 0,
 		allCategories: [],
 		selectedQuestionsAmount: 10,
 		selectedCategoryId: 0,
@@ -67,10 +67,24 @@ export default new Vuex.Store({
 		setQuestionItems: (state, payload) => {
 			state.questionItems = payload;
 		},
+		setNextQuestionIndex: (state) => {
+			state.currentQuestionIndex++;
+		},
+		setUserAnswer: (state, payload) => {
+			state.questions[state.currentQuestionIndex].user_answer = payload
+		}
 	},
 	getters: {
 		userFound: state => {
 			return state.userId
+		},
+		getCurrentQuestion: state => {
+			// console.log("Current question Getter ", state.questions)
+			// console.log("Current questionIndex Getter ", state.currentQuestionIndex)
+			return state.questions[state.currentQuestionIndex]
+		},
+		getQuestions: state => {
+			return state.questions
 		}
 	},
 	actions: {
