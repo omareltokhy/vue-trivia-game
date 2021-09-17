@@ -1,13 +1,12 @@
 <template>
   <div>
-    <h1 v-html="currentQuestion.question"></h1>
-    <button
+    <span>Question {{currentQuestionIndex + 1}} / {{questions.length}} </span>
+    <h2 v-html="currentQuestion.question"></h2>
+    <button v-html="answer"
       @click="answerSelected(answer)"
       v-for="answer in currentAnswers"
       :key="answer"
-    >
-      {{ answer }}
-    </button>
+    ></button>
   </div>
 </template>
 
@@ -18,12 +17,11 @@ import store from "@/store/store";
 export default {
   name: "Questions",
   created() {
+
     this.currentQuestion = this.getQuestion();
-
     this.currentAnswers = this.getAnswers();
+    console.log(this.questions)
 
-    console.log("this.currentQuestion: " + this.getQuestion());
-    console.log("this.currentAnswers: " + this.currentAnswers);
   },
   data() {
     return {
@@ -42,6 +40,7 @@ export default {
       "setUserAnswer",
       "setQuestionsError",
       "addUserPoints",
+      "initQuestionIndex",
     ]),
     getQuestion: function () {
       return store.getters.getCurrentQuestion;
@@ -52,7 +51,9 @@ export default {
       }
       let answers = store.getters.getCurrentQuestion.incorrect_answers;
       answers.push(store.getters.getCurrentQuestion.correct_answer);
-      return answers;
+
+      let shuffledAnswers = answers.sort((a, b) => 0.5 - Math.random());
+      return shuffledAnswers;
     },
     answerSelected: function (answer) {
       this.setUserAnswer(answer);
@@ -61,15 +62,21 @@ export default {
       this.goToNextQuestion();
     },
     goToNextQuestion() {
-      this.setNextQuestionIndex();
       //If no next question, go to result page
-      if (!this.questions[this.currentQuestionIndex++]) this.$router.push("/result");
+      if (this.questions.length === (this.currentQuestionIndex + 1)){
+        this.initQuestionIndex()
+        this.$router.push("/result");
+      }        
       else {
+        this.setNextQuestionIndex();
         this.currentQuestion = this.getQuestion();
         this.currentAnswers = this.getAnswers();
         console.log("this.currentQuestion: " + this.getQuestion());
         console.log("this.currentAnswers: " + this.currentAnswers);
       }
+    },
+    getCurrentQuestionCount() {
+      return this.currentQuestionIndex;
     },
   },
 };

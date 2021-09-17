@@ -67,6 +67,9 @@ export default new Vuex.Store({
 		setQuestionItems: (state, payload) => {
 			state.questionItems = payload;
 		},
+		initQuestionIndex: (state) => {
+			state.currentQuestionIndex = 0;
+		},
 		setNextQuestionIndex: (state) => {
 			state.currentQuestionIndex++;
 		},
@@ -75,6 +78,10 @@ export default new Vuex.Store({
 		},
 		addUserPoints: (state, payload) => {
 			state.score += payload
+		},
+		initQuestionParams: state => {
+			state.currentQuestionIndex = 0;
+			state.score = 0;
 		}
 	},
 	getters: {
@@ -88,6 +95,12 @@ export default new Vuex.Store({
 		},
 		getQuestions: state => {
 			return state.questions
+		},
+		scoreIsNewHighscore: state => {
+			return state.score > state.highScore
+		},
+		getHighscore: state => {
+			return state.highScore
 		}
 	},
 	actions: {
@@ -122,7 +135,7 @@ export default new Vuex.Store({
 		// Updating a new high score for user by id
 		async updateHighScore({ commit, state }) {
 			try {
-				const [error, user] = await UserAPI.editHighScore(state.userId);
+				const [error, user] = await UserAPI.editHighScore(state.userId, state.score);
 				// Updating values
 				commit("setUser", user);
 				commit("setHighScore", state.user.highScore);
