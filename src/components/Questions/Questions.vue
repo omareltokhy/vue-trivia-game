@@ -1,17 +1,29 @@
 <template>
-  <div>
-    <h1>Questions list</h1>
-    <ul>
-      Question
-    </ul>
-  </div>
+  <h1>
+    {{ compQuestion }}
+  </h1>
 </template>
 
 <script>
 // import fetchQuestions from "@/api/questionsAPI";
+import { mapActions } from "vuex"
 
 export default {
   name: "Questions",
+  methods: {
+    ...mapActions([])
+  },
+  props: {
+    question: {
+      type: String,
+      required: true
+    }
+  },
+  computed:{
+    compQuestion(){
+        return this.question;
+    }
+  },
   components: {
 
   },
@@ -30,3 +42,7 @@ export default {
   // },
 };
 </script>
+
+<style scoped>
+
+</style>
