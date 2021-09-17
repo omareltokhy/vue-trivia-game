@@ -79,8 +79,12 @@ export default new Vuex.Store({
 			return state.userId
 		},
 		getCurrentQuestion: state => {
+			// console.log("Current question Getter ", state.questions)
+			// console.log("Current questionIndex Getter ", state.currentQuestionIndex)
+			return state.questions[state.currentQuestionIndex]
+		},
+		getQuestions: state => {
 			return state.questions
-			// [state.currentQuestionIndex]
 		}
 	},
 	actions: {

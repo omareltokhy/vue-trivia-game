@@ -62,11 +62,15 @@ export default {
   name: "Settings",
   async created() {
     try {
+      //Set category selectioin to "Genral knowledge" ID
+      this.setSelectedCategoryId(9);
+
       const [error, allCategories] = await this.getCategories();
       this.setCategories(allCategories.trivia_categories)
       this.setQuestionsError(error)
-
       this.getQuestions();
+      
+      
     } catch (error) {
       this.setQuestionsError(error.message)
     }

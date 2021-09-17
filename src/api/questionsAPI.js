@@ -1,8 +1,7 @@
 export const QuestionsAPI = {
     async getQuestions(questionsAmount, CategoryId, difficulty) {
         let URL = "https://opentdb.com/api.php?" + "amount=" + questionsAmount + "&category=" + CategoryId + "&difficulty=" + difficulty;
-        // console.log("Fetching questions from URL: " + URL)
-        
+        console.log("Fetching questions from URL: " + URL)
         try {
             const results = await fetch(URL).then(r => r.json())
             // console.log(results)
