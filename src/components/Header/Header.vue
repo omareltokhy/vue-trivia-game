@@ -26,4 +26,7 @@ export default {
     #title {
         color: red;
     }
+    li {
+        list-style: none;
+    }
 </style>

@@ -3,6 +3,7 @@ export const QuestionsAPI = {
         let URL = "https://opentdb.com/api.php?" + "amount=" + questionsAmount + "&category=" + CategoryId + "&difficulty=" + difficulty;
         try {
             const results = await fetch(URL).then(r => r.json())
+            console.log(results)
             return [null, results]
         } catch (error) {
             return [error.message, []]

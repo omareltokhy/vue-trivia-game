@@ -1,5 +1,6 @@
 <template>
   <div>
+    <div class="loading" v-if="this.isLoading"> <img src="@/assets/loading.gif" alt=""> </div>
     <Username />
     <Settings />
     <button @click="startTrivia">Start Trivia!</button>
@@ -18,12 +19,18 @@ export default {
     Username,
     Settings
   },
+  data() {
+    return {
+      isLoading: false,
+    };
+  },
   computed: {
     ...mapGetters(['userFound'])
   },
   methods: {
     ...mapActions(['getUser', 'addUser', 'getQuestions']),
     async startTrivia() {
+      this.isLoading = true
       try {
         await this.getUser()
         // If the user is not in the API, new user will be added
@@ -31,8 +38,9 @@ export default {
           this.addUser()
         }
         await this.getQuestions();
+        this.isLoading = false
       } catch (error) {
-        console.log(error)
+        this.isLoading = false
       }
       this.$router.push('/questions')
     }
