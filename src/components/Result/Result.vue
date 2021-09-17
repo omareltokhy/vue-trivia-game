@@ -3,7 +3,7 @@
     <meta charset="UTF-8">
     <h2>Results</h2>
 
-    <div class="loading" v-if="this.isLoading"> <img src="@/assets/loading.gif" alt=""> </div>
+    <div class="loading" v-if="this.isLoading"><img src="@/assets/loading.gif" alt=""></div>
 
     <p id="new_highscore" v-if="score > highScore">New highscore!</p>
     <p>Your score: <span class="score">{{score}}</span></p>
@@ -33,16 +33,12 @@ import { mapState, mapActions, mapMutations } from "vuex";
 
 export default {
   name: "Result",
-  async created() {
-
-    this.isLoading = false;
-  },
   computed: {
     ...mapState(["username", "score", "highScore", "highScore", "questions"]),
   },
   data() {
     return {
-      isLoading: true,
+      isLoading: false,
     };
   },
   methods: {
