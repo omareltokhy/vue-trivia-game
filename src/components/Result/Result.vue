@@ -22,7 +22,9 @@
       >
         <strong v-html="question.question"></strong>
         <p v-html="question.correct_answer"></p>
+
         <span v-if="question.correct_answer == question.user_answer"> Correct! +10</span>
+        <span v-else>Correct answer: {{question.correct_answer}}</span>
       </li>
     </ul>
     </div>
@@ -54,7 +56,7 @@ export default {
     },
     async onReplay() {
       this.isLoading = true;
-      //1. Fetch new questions
+      //Fetch new questions
       try {
         await this.getQuestions();
         this.isLoading = false;
@@ -62,8 +64,6 @@ export default {
         this.setQuestionsError(error.message)
         this.isLoading = false;
       }
-      //2. Settings already in store?
-      //3. Route to questions page
       this.$router.push('/questions')
     },
   },

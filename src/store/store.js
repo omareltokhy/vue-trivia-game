@@ -72,6 +72,9 @@ export default new Vuex.Store({
 		},
 		setUserAnswer: (state, payload) => {
 			state.questions[state.currentQuestionIndex].user_answer = payload
+		},
+		addUserPoints: (state, payload) => {
+			state.score += payload
 		}
 	},
 	getters: {
