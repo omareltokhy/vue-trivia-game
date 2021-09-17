@@ -25,7 +25,7 @@ export default {
     top: 0;
     left: 0;
     padding-top: 20%;
-    position: absolute;
+    position: fixed;
     text-align: center;
   }
 #app {
