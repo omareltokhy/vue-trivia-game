@@ -7,7 +7,7 @@
 
     <p id="new_highscore" v-if="score > highScore">New highscore!</p>
     <p>Your score: <span class="score">{{score}}</span></p>
-    <p>Previous high score: <span class="score">{{highScore}}</span></p>
+    <p>Previous high score: <span class="score">{{previousHighscore}}</span></p>
 
     <button @click="onStart">Back to start</button>
     <button @click="onReplay">Replay</button>
@@ -21,41 +21,50 @@
         :key="question.id"
       >
         <strong v-html="question.question"></strong>
-        <p v-html="question.correct_answer"></p>
+        <p>Your answer: <span v-html="question.user_answer"></span></p>
 
         <span v-if="question.correct_answer == question.user_answer"> Correct! +10</span>
-        <span v-else>Correct answer: {{question.correct_answer}}</span>
+        <p v-else>Correct answer: {{question.correct_answer}}</p>
       </li>
     </ul>
     </div>
   </div>
 </template>
 <script>
-import { mapState, mapActions, mapMutations } from "vuex";
+import { mapState, mapActions, mapMutations, mapGetters } from "vuex";
+import store from "@/store/store";
 
 export default {
   name: "Result",
+  created() {
+    this.checkHighscore()
+  },
   computed: {
     ...mapState(["username", "score", "highScore", "highScore", "questions"]),
+    ...mapGetters(["scoreIsNewHighscore", "getHighscore"])
   },
   data() {
     return {
       isLoading: false,
+      previousHighscore: 0
     };
   },
   methods: {
-    ...mapActions(["getQuestions"]),
+    ...mapActions(["getQuestions", "updateHighScore"]),
     ...mapMutations([
       "setSelectedCategoryId",
       "setSelectedQuestionsAmount",
       "setSelectedDifficulty",
-      "setQuestionsError"
+      "setQuestionsError",
+      "initQuestionParams"
     ]),
     onStart(){
+      this.initQuestionParams()
       this.$router.push('/start')
     },
     async onReplay() {
       this.isLoading = true;
+      this.initQuestionParams()
       //Fetch new questions
       try {
         await this.getQuestions();
@@ -66,6 +75,10 @@ export default {
       }
       this.$router.push('/questions')
     },
+    checkHighscore(){
+      this.previousHighscore = store.getters.getHighscore
+      if(store.getters.scoreIsNewHighscore) this.updateHighScore()
+    }
   },
 };
 </script>

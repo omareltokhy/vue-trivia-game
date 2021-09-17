@@ -33,7 +33,7 @@ export const UserAPI = {
         }
     },
     // Updating user's high score
-    async editHighScore(userId) {
+    async editHighScore(userId, highScore) {
         try {
             const result = await fetch(`${apiURL}/${userId}`, {
                 method: 'PATCH',
@@ -42,7 +42,7 @@ export const UserAPI = {
                   'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    highScore: 100  
+                    highScore: highScore  
                 })
             })
             .then(result => result.json())
