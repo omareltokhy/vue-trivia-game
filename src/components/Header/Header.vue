@@ -21,7 +21,7 @@ export default {
   margin: 0;
   top: 0;
   width: 100%;
-  position: absolute;
+  position: relative;
 }
 #title {
   color: red;

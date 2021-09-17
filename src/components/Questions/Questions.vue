@@ -47,7 +47,7 @@ export default {
     },
     getAnswers: function () {
       if (store.getters.getCurrentQuestion.type === "boolean") {
-        return [true, false];
+        return ["True", "False"];
       }
       let answers = store.getters.getCurrentQuestion.incorrect_answers;
       answers.push(store.getters.getCurrentQuestion.correct_answer);
