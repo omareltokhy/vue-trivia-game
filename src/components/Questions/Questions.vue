@@ -1,48 +1,50 @@
 <template>
-  <h1>
-    {{ compQuestion }}
-  </h1>
+  <div>
+    <h1 v-html="questions.question"></h1>
+    <ul>
+      <li>
+
+      </li>
+    </ul>
+  </div>
 </template>
 
 <script>
-// import fetchQuestions from "@/api/questionsAPI";
-import { mapActions } from "vuex"
+import { mapState, mapMutations, mapGetters } from "vuex";
+import store from "@/store/store"
 
 export default {
   name: "Questions",
+  created() {
+    // this.currentQuestion = this.questions[0]
+    // this.setNextQuestionIndex()
+    console.log("questions: ", this.getQuestion())
+  },
+  data() {
+    return {
+      isLoading: false,
+      currentQuestion: {}
+    };
+  },
   methods: {
-    ...mapActions([])
-  },
-  props: {
-    question: {
-      type: String,
-      required: true
+    ...mapMutations([
+      "setNextQuestionIndex",
+      "setUserAnswer",
+      "setQuestionsError",
+    ]),
+    getQuestion: function () {
+      return store.getters.getCurrentQuestion;
+    },
+    getAnswers: function() {
+
     }
   },
-  computed:{
-    compQuestion(){
-        return this.question;
-    }
+  computed: {
+    ...mapState(["questions", "currentQuestionIndex"]),
+    ...mapGetters(["getCurrentQuestion"]),
   },
-  components: {
-
-  },
-  // async created() {
-  //   const { error, questions } = await fetchQuestions();
-
-  //   this.error = error;
-  //   this.questions = questions;
-  // },
-  // data() {
-  //   return {
-  //     isLoading: true,
-  //     error: this.error,
-  //     questions: this.questions,
-  //   };
-  // },
 };
 </script>
 
 <style scoped>
-
 </style>
