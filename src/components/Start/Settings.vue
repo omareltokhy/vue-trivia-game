@@ -27,7 +27,7 @@
     />
 
     <label for="trivia_amount" class="container-amount">
-      Number of Questions:</label
+      Number of Questions (max 50):</label
     >
     <input
       type="number"
