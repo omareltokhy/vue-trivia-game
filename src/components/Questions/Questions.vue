@@ -6,9 +6,13 @@
 
 <script>
 // import fetchQuestions from "@/api/questionsAPI";
+import { mapActions } from "vuex"
 
 export default {
   name: "Questions",
+  methods: {
+    ...mapActions([])
+  },
   props: {
     question: {
       type: String,

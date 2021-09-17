@@ -157,7 +157,7 @@ export default new Vuex.Store({
 		},
 		async getQuestionItems({ commit, state }) {
 			try {
-				const[error, questions] = await QuestionsAPI.getQuestions();
+				const[error, questions] = await QuestionsAPI.getQuestions(state.selectedQuestionsAmount, state.selectedCategoryId, state.selectedDifficulty);
 				state.questionsError = error;
 
 				if(questions) commit("setQuestionItems", questions.results);

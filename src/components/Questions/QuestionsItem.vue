@@ -1,6 +1,6 @@
 <template>
     <div>
-    <h1 :question="questionItem.question" />
+    <h1> {{questionItem.question}}</h1>
     <button
       v-for="(answer, index) of answerOptions"
       :key="index"
@@ -18,7 +18,9 @@ import { mapState, mapMutations } from 'vuex'
 export default {
     name: "QuestionsItem",
     components: {
+        // eslint-disable-next-line vue/no-unused-components
         Questions,
+        // eslint-disable-next-line vue/no-unused-components
         Answers
     },
     computed:{
@@ -50,7 +52,7 @@ export default {
             if(this.id < this.numberOfQuestions){
                 this.$router.push(`./questions/${Number(this.id)+1}`)
             }else{
-                this.$router.push(`./results`)
+                this.$router.push(`./result`)
             }
         }
     },
