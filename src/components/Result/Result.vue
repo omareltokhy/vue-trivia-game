@@ -1,11 +1,8 @@
 <template>
   <div>
-    <meta charset="UTF-8">
+    <div class="loading" v-if="this.isLoading">Loading</div>
     <h2>Results</h2>
-
-    <div class="loading" v-if="this.isLoading"><img src="@/assets/loading.gif" alt=""></div>
-
-    <p id="new_highscore" v-if="score > highScore">New highscore!</p>
+    <p id="new_highscore" class="animate__animated animate__heartBeat" v-if="score > previousHighscore">New highscore!</p>
     <p>Your score: <span class="score">{{score}}</span></p>
     <p>Previous high score: <span class="score">{{previousHighscore}}</span></p>
 
@@ -22,14 +19,14 @@
       >
         <strong v-html="question.question"></strong>
         <p>Your answer: <span v-html="question.user_answer"></span></p>
-
         <span v-if="question.correct_answer == question.user_answer"> Correct! +10</span>
-        <p v-else>Correct answer: {{question.correct_answer}}</p>
+        <p v-else>Correct answer: <span v-html="question.correct_answer"></span></p>
       </li>
     </ul>
     </div>
   </div>
 </template>
+
 <script>
 import { mapState, mapActions, mapMutations, mapGetters } from "vuex";
 import store from "@/store/store";
@@ -58,10 +55,12 @@ export default {
       "setQuestionsError",
       "initQuestionParams"
     ]),
+    // If user wants to go back to start screen
     onStart(){
       this.initQuestionParams()
       this.$router.push('/start')
     },
+    // If user wants to play trivia again with the same settings
     async onReplay() {
       this.isLoading = true;
       this.initQuestionParams()
@@ -75,6 +74,7 @@ export default {
       }
       this.$router.push('/questions')
     },
+    // Checking if the score is better than user's previous high score
     checkHighscore(){
       this.previousHighscore = store.getters.getHighscore
       if(store.getters.scoreIsNewHighscore) this.updateHighScore()

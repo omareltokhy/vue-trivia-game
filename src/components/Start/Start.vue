@@ -1,6 +1,6 @@
 <template>
   <div class="trivia-start">
-    <div class="loading" v-if="this.isLoading"> <img src="@/assets/loading.gif" alt=""> </div>
+    <div class="loading" v-if="this.isLoading">Loading</div>
     <Username />
     <Settings />
     <button @click="startTrivia">Start Trivia!</button>
@@ -49,7 +49,5 @@ export default {
 </script>
 
 <style scoped>
-.trivia-start {
-  margin-top: 300px;
-}
+
 </style>

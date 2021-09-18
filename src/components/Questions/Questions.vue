@@ -17,11 +17,9 @@ import store from "@/store/store";
 export default {
   name: "Questions",
   created() {
-
     this.currentQuestion = this.getQuestion();
     this.currentAnswers = this.getAnswers();
     console.log(this.questions)
-
   },
   data() {
     return {
