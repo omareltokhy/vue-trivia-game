@@ -12,6 +12,7 @@ export default {
   name: "Username",
   methods: {
     ...mapMutations(['setUsername']),
+    // Updating the username to the store
     onUsernameChange(event) {
       this.setUsername(event.target.value.trim())
     },
@@ -21,7 +22,7 @@ export default {
 
 <style scoped>
   #username {
-    border-color: red;
+    border-color: #ee6c4d;
   }
   #username:focus {
       border-color: black;
