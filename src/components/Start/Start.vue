@@ -29,14 +29,17 @@ export default {
   },
   methods: {
     ...mapActions(['getUser', 'addUser', 'getQuestions']),
+    // Starting new trivia with users settings
     async startTrivia() {
       this.isLoading = true
       try {
+        // Try to find the user from the API
         await this.getUser()
         // If the user is not in the API, new user will be added
         if(store.getters.userFound === "") {
           this.addUser()
         }
+        // Getting new questions from the API based on the users choises
         await this.getQuestions();
         this.isLoading = false
       } catch (error) {

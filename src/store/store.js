@@ -6,7 +6,6 @@ import { UserAPI } from "../api/usersAPI";
 Vue.use(Vuex);
 
 export default new Vuex.Store({
-	strict: true,
 	state: {
 		user: [],
 		userId: "",
@@ -89,8 +88,6 @@ export default new Vuex.Store({
 			return state.userId
 		},
 		getCurrentQuestion: state => {
-			// console.log("Current question Getter ", state.questions)
-			// console.log("Current questionIndex Getter ", state.currentQuestionIndex)
 			return state.questions[state.currentQuestionIndex]
 		},
 		getQuestions: state => {
@@ -144,6 +141,7 @@ export default new Vuex.Store({
 				commit("setUserError", error.message);
 			}
 		},
+		// Get questions from API based on settings
 		async getQuestions({ commit, state }) {
 			try {
 				//Fetch max questions per difficulty level
@@ -173,27 +171,16 @@ export default new Vuex.Store({
 				commit("setQuestionsError", error.message);
 			}
 		},
+		// Get all category names in API
 		async getCategories({ commit, state }) {
 			try {
 				const [error, categories] = await QuestionsAPI.getCategories();
 				state.questionsError = error;
 
-				// console.log("Categories fetched: " + categories.trivia_categories)
 				if (categories) commit("setCategories", categories.trivia_categories);
 				else commit("setQuestionsError", error);
 			} catch (error) {
 				commit("setQuestionsError", error.message);
-			}
-		},
-		async getQuestionItems({ commit, state }) {
-			try {
-				const[error, questions] = await QuestionsAPI.getQuestions(state.selectedQuestionsAmount, state.selectedCategoryId, state.selectedDifficulty);
-				state.questionsError = error;
-
-				if(questions) commit("setQuestionItems", questions.results);
-				else commit("setQuestionsError", error.message)
-			} catch (error) {
-				commit("setQuestionsError", error.message)
 			}
 		},
 	},
