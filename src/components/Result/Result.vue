@@ -84,6 +84,9 @@ export default {
 </script>
 
 <style scoped>
+  ul  {
+    padding-left: 0;
+  }
   li {
     list-style: none;
   }
