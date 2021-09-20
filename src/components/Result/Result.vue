@@ -106,6 +106,6 @@ export default {
     border-radius: 25px;
     margin: 10px;
     padding: 10px;
-    width: 80%;
+    width: 80% auto;
   }
 </style>
