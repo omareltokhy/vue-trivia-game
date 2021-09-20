@@ -1,5 +1,5 @@
 <template>
-  <div class="trivia-start">
+  <div v-click-outside="startTrivia" class="trivia-start">
     <div class="loading" v-if="this.isLoading">Loading</div>
     <Username />
     <Settings />
@@ -11,6 +11,7 @@
 import Username from "./Username.vue"
 import Settings from "./Settings.vue"
 import store from "@/store/store"
+import ClickOutside from 'vue-click-outside'
 import { mapActions, mapGetters } from 'vuex'
 
 export default {
@@ -23,6 +24,9 @@ export default {
     return {
       isLoading: false,
     };
+  },
+  directives: {
+    ClickOutside
   },
   computed: {
     ...mapGetters(['userFound'])

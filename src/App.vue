@@ -21,51 +21,51 @@ import Header from "./components/Header/Header.vue";
 export default {
   name: "App",
   components: {
-    Header
+    Header,
   },
 };
 </script>
 
 <style>
-  .loading {
-    font-size:2rem;
-    color: #ee6c4d;
-    font-weight: bold;
-    text-align: center;
-  }
+.loading {
+  font-size: 2rem;
+  color: #ee6c4d;
+  font-weight: bold;
+  text-align: center;
+}
 
-  .loading::after {
-    content: '\2026';
-    display: inline-block;
-    overflow: hidden;
-    vertical-align: bottom;
-    animation: dots steps(4, end) 1.2s, infinite;
-    width: 0px;
+.loading::after {
+  content: "\2026";
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+  animation: dots steps(4, end) 1.2s, infinite;
+  width: 0px;
+}
+@keyframes dots {
+  to {
+    width: 3rem;
   }
-   @keyframes dots {
-     to{ 
-       width: 3rem;
-     }
-   }
+}
 .app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  background-color :#3d5a80;
+  background-color: #3d5a80;
   width: 100%;
   height: 100% auto;
   min-height: 100%;
   position: absolute;
-  top:0;
+  top: 0;
   right: 0;
   bottom: 0 auto;
   left: 0;
   display: block;
   text-decoration: none;
 }
-.app-container{
+.app-container {
   background-color: whitesmoke;
   padding: 3rem auto;
   margin: 4rem;
@@ -75,14 +75,14 @@ export default {
   justify-content: center;
   align-items: stretch;
 }
-.content{
-  margin:1rem;
+.content {
+  margin: 1rem;
 }
-template{
-  width:100%;
+template {
+  width: 100%;
   height: 100%;
 }
-button{
+button {
   border-radius: 25px;
   border-color: #ee6c4d;
   background-color: #ee6c4d;
@@ -90,5 +90,10 @@ button{
   margin: 15px;
   width: 10rem;
   color: whitesmoke;
+}
+@media only screen and (max-width: 768px) {
+  .app-container {
+    margin: 4rem 10px;
+  }
 }
 </style>
