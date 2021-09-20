@@ -40,7 +40,7 @@
     />
 
     <label class="container-category"
-      >Category:
+      >Category:</label>
       <select @change="onCategoryChange">
         <option
           v-for="category in allCategories"
@@ -50,7 +50,6 @@
           {{ category.name }}
         </option>
       </select>
-    </label>
   </div>
 </template>
 
@@ -107,13 +106,35 @@ export default {
 </script>
 
 <style scope>
-.container-radio,
 .container-amount,
 .container-category {
   display: block;
-  margin: 10px 0 10px 0;
+  margin-top:15px;
+  border-radius: 25px;
+  padding: 5px;
 }
 .container-radio {
   cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  margin-left: 10px;
+  margin-top: 15px;
+}
+select{
+  border-radius: 25px;
+  border-width: 2px;
+  padding:5px;
+  border-color: red;
+}
+select:focus{
+  border-color: black;
+}
+input{
+  border-radius: 25px;
+  padding:5px;
+  border-color: red;
+}
+input:focus{
+  border-color: black;
 }
 </style>

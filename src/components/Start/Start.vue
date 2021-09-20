@@ -3,7 +3,7 @@
     <div class="loading" v-if="this.isLoading"> <img src="@/assets/loading.gif" alt=""> </div>
     <Username />
     <Settings />
-    <button @click="startTrivia">Start Trivia!</button>
+    <button class="start" @click="startTrivia">START TRIVIA</button>
   </div>
 </template>
 
@@ -50,6 +50,9 @@ export default {
 
 <style scoped>
 .trivia-start {
-  margin-top: 300px;
+  margin-top: 30px;
+}
+.start{
+  font-weight:900;
 }
 </style>

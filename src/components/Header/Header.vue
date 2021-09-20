@@ -1,11 +1,10 @@
 <template>
-  <div class="header">
-    <h1 id="title">Trivia Game!</h1>
-    <ul>
-      <li><router-link to="/start">Link</router-link></li>
-      <li><router-link to="/questions">Link</router-link></li>
-      <li><router-link to="/result">Link</router-link></li>
-    </ul>
+<div class = "header">
+  <div class="inner-header">
+    <div class = "container">
+      <img src = "@/assets/triviagamelogo.png" alt = "TRIVIA GAME">
+    </div>
+  </div>
   </div>
 </template>
 
@@ -16,17 +15,39 @@ export default {
 </script>
 
 <style scoped>
-.header {
-  background-color: pink;
-  margin: 0;
-  top: 0;
-  width: 100%;
-  position: relative;
+#title{
+  color: #e76f51;
 }
-#title {
-  color: red;
+img{
+  margin-top: 1rem;
 }
-li {
-  list-style: none;
+/*.header{
+    background-color: #222831;
+    width: 100%;
+    height: 120px;
+    display: block;
 }
+
+.inner-header{
+    width: 70%;
+    height: 100%;
+    display: block;
+    margin: 0 auto;
+}
+
+.container{
+    height: 100%;
+    width: auto;
+    margin: auto;
+    display: table;
+}
+
+.container h1{
+    color: #EEEEEE;
+    height: 100%;
+    display: table-cell;
+    vertical-align: middle;
+    font-size: 32px;
+    font-weight: 100;
+}*/
 </style>
