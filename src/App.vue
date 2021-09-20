@@ -3,9 +3,15 @@
     <div class="app-container">
       <div class="content">
         <Header />
-        <router-view></router-view>
+        <transition
+          mode="out-in"
+          enter-active-class="animate__animated animate__fadeIn"
+          leave-active-class="animate__animated animate__fadeOut"
+        >
+          <router-view />
+        </transition>
       </div>
-  </div>
+    </div>
   </div>
 </template>
 
@@ -22,16 +28,25 @@ export default {
 
 <style>
   .loading {
-    z-index: 10;
-    background-color: rgba(0,0, 0, 0.35);
-    height: 100%;
-    width: 100%;
-    top: 0;
-    left: 0;
-    padding-top: 20%;
-    position: fixed;
+    font-size:2rem;
+    color: #ee6c4d;
+    font-weight: bold;
     text-align: center;
   }
+
+  .loading::after {
+    content: '\2026';
+    display: inline-block;
+    overflow: hidden;
+    vertical-align: bottom;
+    animation: dots steps(4, end) 1.2s, infinite;
+    width: 0px;
+  }
+   @keyframes dots {
+     to{ 
+       width: 3rem;
+     }
+   }
 .app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -67,7 +82,6 @@ template{
   width:100%;
   height: 100%;
 }
-
 button{
   border-radius: 25px;
   border-color: #ee6c4d;

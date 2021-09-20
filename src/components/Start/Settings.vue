@@ -61,15 +61,13 @@ export default {
   name: "Settings",
   async created() {
     try {
-      //Set category selectioin to "Genral knowledge" ID
+      // Set category selection to "General knowledge" ID
       this.setSelectedCategoryId(9);
-
+      // Get all category names to populate dropdown menu
       const [error, allCategories] = await this.getCategories();
       this.setCategories(allCategories.trivia_categories)
       this.setQuestionsError(error)
-      this.getQuestions();
-      
-      
+      this.getQuestions();      
     } catch (error) {
       this.setQuestionsError(error.message)
     }
@@ -124,7 +122,7 @@ select{
   border-radius: 25px;
   border-width: 2px;
   padding:5px;
-  border-color: red;
+  border-color: #ee6c4d;
 }
 select:focus{
   border-color: black;
@@ -132,7 +130,7 @@ select:focus{
 input{
   border-radius: 25px;
   padding:5px;
-  border-color: red;
+  border-color: #ee6c4d;
 }
 input:focus{
   border-color: black;
