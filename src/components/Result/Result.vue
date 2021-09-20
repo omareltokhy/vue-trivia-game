@@ -6,8 +6,8 @@
     <p>Your score: <span class="score">{{score}}</span></p>
     <p>Previous high score: <span class="score">{{previousHighscore}}</span></p>
 
-    <button @click="onStart">Back to start</button>
-    <button @click="onReplay">Replay</button>
+    <button class= "resultPageButton" @click="onStart">Back to start</button>
+    <button class= "resultPageButton" @click="onReplay">Replay</button>
 
     <div>
       <h3>Questions</h3>
@@ -20,7 +20,7 @@
         <strong v-html="question.question"></strong>
         <p>Your answer: <span v-html="question.user_answer"></span></p>
         <span v-if="question.correct_answer == question.user_answer"> Correct! +10</span>
-        <p v-else>Correct answer: <span v-html="question.correct_answer"></span></p>
+        <span v-else>Correct answer: <span v-html="question.correct_answer"></span></span>
       </li>
     </ul>
     </div>
@@ -94,5 +94,18 @@ export default {
   }
   .score {
     font-weight: bold;
+  }
+  .resultPageButton{
+    font-weight:700;
+  }
+  h2, h3{
+    font-weight: 900;
+  }
+ li{
+    border: 3px solid #3d5a80;
+    border-radius: 25px;
+    margin: 10px;
+    padding: 10px;
+    width: 700px;
   }
 </style>

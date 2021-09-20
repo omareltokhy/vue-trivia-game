@@ -1,8 +1,8 @@
 <template>
   <div>
-    <span>Question {{currentQuestionIndex + 1}} / {{questions.length}} </span>
+    <span id = "questionCount">Question {{currentQuestionIndex + 1}} / {{questions.length}} </span>
     <h2 v-html="currentQuestion.question"></h2>
-    <button v-html="answer"
+    <button class = "answer" v-html="answer"
       @click="answerSelected(answer)"
       v-for="answer in currentAnswers"
       :key="answer"
@@ -81,4 +81,13 @@ export default {
 </script>
 
 <style scoped>
+.answer{
+  width: 80%;
+  font-size: 16px;
+  font-weight: 900;
+  margin:10px;
+}
+.questionCount{
+  font-weight: 700;
+}
 </style>
