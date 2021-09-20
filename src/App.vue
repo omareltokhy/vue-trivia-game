@@ -91,4 +91,9 @@ button {
   width: 10rem;
   color: whitesmoke;
 }
+@media only screen and (max-width: 768px) {
+  .app-container {
+    margin: 4rem 10px;
+  }
+}
 </style>
